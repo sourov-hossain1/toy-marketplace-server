@@ -5,11 +5,11 @@ require('dotenv').config();
 const app = express();
 const port = process.env.PORT || 5000;
 
+
+
 app.use(cors());
 app.use(express.json());
 
-
-console.log(process.env.DB_PASS)
 
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.w2ynlfu.mongodb.net/?retryWrites=true&w=majority`;
 
@@ -25,7 +25,7 @@ const client = new MongoClient(uri, {
 async function run() {
     try {
         // Connect the client to the server	(optional starting in v4.7)
-        await client.connect();
+        // await client.connect();
 
         const toyCollection = client.db('toysDB').collection('toys');
 
@@ -42,7 +42,7 @@ async function run() {
             res.send(result);
         })
 
-        app.delete('/toys', async(req, res) =>{
+        app.delete('/toys/:id', async(req, res) =>{
             const id = req.params.id;
             const query = {_id: new ObjectId(id)}
             const result = await toyCollection.deleteOne(query);
